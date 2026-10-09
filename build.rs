@@ -161,6 +161,8 @@ fn main() {
         // been disabled above).
         .flag_if_supported("-Wno-deprecated-declarations")
         .flag_if_supported("-Wno-deprecated")
+        // .flag("-fsanitize=address")
+        // .flag("-fno-omit-frame-pointer")
         .compile(LIB_EXT);
 }
 
@@ -222,7 +224,9 @@ fn prepare_mbedtls(src: PathBuf) -> EncryptionDst {
         // Skip building binary programs unnecessary for linking library.
         .define("ENABLE_PROGRAMS", "OFF")
         // Skip building test programs that we are not going to run anyway.
-        .define("ENABLE_TESTING", "OFF");
+        .define("ENABLE_TESTING", "OFF")
+        .define("CMAKE_C_FLAGS", "-fsanitize=address -fno-omit-frame-pointer")
+        .define("CMAKE_CXX_FLAGS", "-fsanitize=address -fno-omit-frame-pointer");
 
     // Disable warnings as errors.
     //
